@@ -33,5 +33,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "tries": "https://hungry-noether-8ac1d6.netlify.app/#/"
 }
