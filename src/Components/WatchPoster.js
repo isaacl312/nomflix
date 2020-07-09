@@ -38,11 +38,13 @@ display:flex
 flex-direction: column 
 flex-wrap: wrap
 
+
 `;
 const Title = styled.div`
   display: inline-block;
   font-size: 16px;
   font-weight: 650;
+  width:200px
   margin-bottom: 16px;
 `;
 const Year = styled.span`
@@ -70,7 +72,9 @@ const Rating2 = styled.span`
   font-weight: 500;
   color: rgba(200, 200, 200, 0.8);
 `;
-const DescriptionContainer = styled.div``;
+const DescriptionContainer = styled.div`
+  width: 190px;
+`;
 const Description = styled.div`
 height:100%
 margin-top:12px
@@ -83,71 +87,84 @@ overflow-y: auto;
 const WatchPoster = ({ id, imageUrl, title, year, rating, popularity, description, vote_count, character, isCast, isMovie, isCredit }) => (
   <Link to={isMovie ? `/nomflix/movie/${id}` : `/nomflix/show/${id}`}>
     <Container>
-      <Image bgUrl={imageUrl ? `https://image.tmdb.org/t/p/w300${imageUrl}` : require("../assets/noPosterSmall.png")} />
+      <Image bgUrl={imageUrl ? `https://image.tmdb.org/t/p/w300${imageUrl}` : require("../assets/noPosterSmall.png")} />{" "}
       <>
+        {" "}
         {description.overview === "" && (
           <Title>
-            {title} <Year> {year} </Year>
+            {" "}
+            {title} <Year> {year} </Year>{" "}
           </Title>
-        )}
-      </>
+        )}{" "}
+      </>{" "}
       <>
+        {" "}
         {description.overview !== "" && (
           <ContentContainer>
             <>
               <Title>
-                {title.length > 22 ? `${title.substring(0, 22)}..` : title}
-                {!isCredit ? <Year>{` (${year})`}</Year> : ""}
-              </Title>
-            </>
+                {" "}
+                {title.length > 21 ? `${title.substring(0, 21)}..` : title} {!isCredit ? <Year> {` (${year})`} </Year> : ""}{" "}
+              </Title>{" "}
+            </>{" "}
             <>
               <RatingContainer>
+                {" "}
                 {isCredit && year ? (
                   <RateItem>
-                    {isMovie ? "Relased:" : "Air:"}
-                    <Rating1>{` ${year.replace("-", "/ ")}\u00A0\u00A0`}</Rating1>
+                    {" "}
+                    {isMovie ? "Relased:" : "Air:"} <Rating1> {` ${year.replace("-", "/ ")}\u00A0\u00A0`} </Rating1>{" "}
                   </RateItem>
                 ) : (
                   ""
-                )}
-
+                )}{" "}
                 {isCredit && character ? (
                   <RateItem>
                     {" "}
-                    {isCast ? "Character" : "Job"}: <Rating1>{character.length > 20 ? `${character.substring(0, 20)}..` : character}</Rating1>
+                    {isCast ? "Character" : "Job"}: <Rating1> {character.length > 20 ? `${character.substring(0, 20)}..` : character} </Rating1>{" "}
                   </RateItem>
                 ) : (
                   ""
-                )}
-
+                )}{" "}
                 {isCredit && popularity ? (
                   <RateItem>
-                    Popularity: <Rating1> {`\u00A0${popularity.toString().substr(0, popularity.toString().search(/[.]/) + 2)}`} </Rating1>
-                    <Rating2> (by TMDb) </Rating2>
+                    Popularity: <Rating1> {`\u00A0${popularity.toString().substr(0, popularity.toString().search(/[.]/) + 2)}`} </Rating1> <Rating2> (by TMDb) </Rating2>
                   </RateItem>
                 ) : (
                   ""
-                )}
+                )}{" "}
                 {rating && (
                   <RateItem>
-                    Critic Votes: <Rating1> {`\u00A0${rating.toString().substr(0, rating.toString().search(/[.]/) + 2)}`} </Rating1> <Rating2> /10 ({vote_count} rates)</Rating2>
+                    Critic Votes: <Rating1> {`\u00A0${rating.toString().substr(0, rating.toString().search(/[.]/) + 2)}`} </Rating1>{" "}
+                    <Rating2>
+                      / 10( {vote_count}
+                      rates){" "}
+                    </Rating2>{" "}
                   </RateItem>
-                )}
-              </RatingContainer>
-            </>
+                )}{" "}
+              </RatingContainer>{" "}
+            </>{" "}
             {isCredit ? (
-              <DescriptionContainer style={{ height: "185px" }}>
-                <Description>{description.overview}</Description>
+              <DescriptionContainer
+                style={{
+                  height: "185px",
+                }}
+              >
+                <Description> {description.overview} </Description>{" "}
               </DescriptionContainer>
             ) : (
-              <DescriptionContainer style={{ height: "77%" }}>
-                <Description>{description.overview}</Description>
+              <DescriptionContainer
+                style={{
+                  height: "77%",
+                }}
+              >
+                <Description> {description.overview} </Description>{" "}
               </DescriptionContainer>
-            )}
+            )}{" "}
           </ContentContainer>
-        )}
-      </>
-    </Container>
+        )}{" "}
+      </>{" "}
+    </Container>{" "}
   </Link>
 );
 
@@ -157,11 +174,10 @@ WatchPoster.propTypes = {
   title: PropTypes.string.isRequired,
   character: PropTypes.string,
   year: PropTypes.string,
-  rating: PropTypes.number,
+
   popularity: PropTypes.number,
   isMovie: PropTypes.bool,
   isCredit: PropTypes.bool,
-  description: PropTypes.string,
   vote_count: PropTypes.number,
 };
 

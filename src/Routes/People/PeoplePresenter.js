@@ -45,10 +45,10 @@ const PosterImg = styled.div`
 const Center = styled.div`
   width: 40%;
   height: 100%
-  margin-left: 10px;
+  margin-left: 40px;
   `;
 const DiscriptionContainer = styled.div`
-  height: 40%;
+  height: 100%;
   width: 90%
   overflow: hidden;
   text-overflow: ellipsis;
@@ -102,10 +102,10 @@ const PeoplePresenter = ({ result, loading, error }) =>
       <FirstPage>
         <Backdrop bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`} />{" "}
         <Helmet>
-          <title>{result.name ? result.name : ""}| Nomflix</title>
-        </Helmet>
+          <title> {result.name ? result.name : ""} | Nomflix </title>{" "}
+        </Helmet>{" "}
         <Content>
-          <PosterImg bgImage={result.profile_path ? `https://image.tmdb.org/t/p/original${result.profile_path}` : require("../../assets/noPosterSmall.png")} />
+          <PosterImg bgImage={result.profile_path ? `https://image.tmdb.org/t/p/original${result.profile_path}` : require("../../assets/noPosterSmall.png")} />{" "}
           <Center>
             <DiscriptionContainer>
               <Title> {result.name ? result.name : ""} </Title>{" "}
@@ -125,109 +125,128 @@ const PeoplePresenter = ({ result, loading, error }) =>
             </DiscriptionContainer>{" "}
           </Center>{" "}
         </Content>{" "}
-      </FirstPage>
+      </FirstPage>{" "}
       <>
+        {" "}
         <SecondPage>
           <SecondContainer>
             <MovieCredit>
               <>
-                {result.movie_credits.cast && (
-                  <WatchSection title={`Movice Casted (${result.movie_credits.cast.length})`} subtitle="">
-                    {result.movie_credits.cast.slice(0, 6).map((movie) => (
-                      <WatchPoster
-                        key={movie.id}
-                        id={movie.id}
-                        imageUrl={movie.poster_path}
-                        title={movie.title}
-                        year={movie.release_date ? movie.release_date.substring(0, 7) : ""}
-                        rating={movie.vote_average ? movie.vote_average : ""}
-                        popularity={movie.popularity}
-                        description={movie}
-                        character={movie.character}
-                        isCredit={true}
-                        isMovie={true}
-                        isCast={true}
-                        vote_count={movie.vote_count}
-                      />
-                    ))}{" "}
+                {result.movie_credits.cast.length > 0 && (
+                  <WatchSection title={`Movie Casted (${result.movie_credits.cast.length})`} subtitle="">
+                    {" "}
+                    {result.movie_credits.cast
+                      .filter((movie) => movie.poster_path)
+                      .slice(0, 6)
+                      .map((movie) => (
+                        <WatchPoster
+                          key={movie.id}
+                          id={movie.id}
+                          imageUrl={movie.poster_path}
+                          title={movie.title ? movie.title : ""}
+                          year={movie.release_date ? movie.release_date.substring(0, 7) : ""}
+                          rating={movie.vote_average ? movie.vote_average : ""}
+                          popularity={movie.popularity}
+                          description={movie}
+                          character={movie.character}
+                          isCredit={true}
+                          isMovie={true}
+                          isCast={true}
+                          vote_count={movie.vote_count}
+                        />
+                      ))}{" "}
                   </WatchSection>
                 )}{" "}
-              </>
+              </>{" "}
               <>
-                {result.movie_credits.crew && (
-                  <WatchSection title={`Produced Movies (${result.movie_credits.crew.length})`}>
-                    {result.movie_credits.crew.slice(0, 6).map((movie) => (
-                      <WatchPoster
-                        key={movie.id}
-                        id={movie.id}
-                        imageUrl={movie.poster_path}
-                        title={movie.title}
-                        year={movie.release_date ? movie.release_date.substring(0, 7) : ""}
-                        rating={movie.vote_average ? movie.vote_average : ""}
-                        popularity={movie.popularity}
-                        description={movie}
-                        character={movie.job}
-                        isCredit={true}
-                        isMovie={true}
-                        isCast={false}
-                        vote_count={movie.vote_count}
-                      />
-                    ))}{" "}
+                {" "}
+                {result.movie_credits.crew.length > 0 && (
+                  <WatchSection title={`Movie Produced (${result.movie_credits.crew.length})`}>
+                    {" "}
+                    {result.movie_credits.crew
+                      .filter((movie) => movie.poster_path)
+                      .slice(0, 6)
+                      .map((movie) => (
+                        <WatchPoster
+                          key={movie.id}
+                          id={movie.id}
+                          imageUrl={movie.poster_path}
+                          title={movie.title}
+                          year={movie.release_date ? movie.release_date.substring(0, 7) : ""}
+                          rating={movie.vote_average ? movie.vote_average : ""}
+                          popularity={movie.popularity}
+                          description={movie}
+                          character={movie.job}
+                          isCredit={true}
+                          isMovie={true}
+                          isCast={false}
+                          vote_count={movie.vote_count}
+                        />
+                      ))}{" "}
                   </WatchSection>
                 )}{" "}
-              </>
+              </>{" "}
             </MovieCredit>{" "}
             <TVCredit>
               <>
-                {result.tv_credits.cast && (
+                {result.tv_credits.cast.length > 0 && (
                   <WatchSection title={`TV Casted (${result.tv_credits.cast.length})`} subtitle="">
-                    {result.tv_credits.cast.slice(0, 6).map((tv) => (
-                      <WatchPoster
-                        key={tv.id}
-                        id={tv.id}
-                        imageUrl={tv.poster_path}
-                        title={tv.name ? tv.name : ""}
-                        year={tv.first_air_date ? tv.first_air_date.substring(0, 7) : ""}
-                        popularity={tv.popularity}
-                        rating={tv.vote_average ? tv.vote_average : ""}
-                        vote_count={tv.vote_count}
-                        description={tv}
-                        character={tv.character}
-                        isCredit={true}
-                        isMovie={true}
-                        isCast={true}
-                      />
-                    ))}{" "}
+                    {" "}
+                    {result.tv_credits.cast
+                      .filter((tv) => tv.poster_path)
+                      .slice(0, 6)
+                      .map((tv) => (
+                        <WatchPoster
+                          key={tv.id}
+                          id={tv.id}
+                          imageUrl={tv.poster_path}
+                          title={tv.name ? tv.name : ""}
+                          year={tv.first_air_date ? tv.first_air_date.substring(0, 7) : ""}
+                          popularity={tv.popularity}
+                          rating={tv.vote_average ? tv.vote_average : ""}
+                          vote_count={tv.vote_count}
+                          description={tv}
+                          character={tv.character}
+                          isCredit={true}
+                          isMovie={true}
+                          isCast={true}
+                        />
+                      ))}{" "}
                   </WatchSection>
                 )}{" "}
-              </>
+              </>{" "}
               <>
-                {result.tv_credits.crew && (
-                  <WatchSection title={`Produced Movies (${result.tv_credits.crew.length})`}>
-                    {result.tv_credits.crew.slice(0, 6).map((tv) => (
-                      <WatchPoster
-                        key={tv.id}
-                        id={tv.id}
-                        imageUrl={tv.poster_path}
-                        title={tv.name ? tv.name : ""}
-                        year={tv.first_air_date ? tv.first_air_date.substring(0, 7) : ""}
-                        rating={tv.vote_average ? tv.vote_average : ""}
-                        popularity={tv.popularity}
-                        description={tv}
-                        character={tv.job}
-                        isCredit={true}
-                        isMovie={true}
-                        isCast={false}
-                        vote_count={tv.vote_count}
-                      />
-                    ))}{" "}
+                {" "}
+                {result.tv_credits.crew.length > 0 && (
+                  <WatchSection title={`TV Production (${result.tv_credits.crew.length})`}>
+                    {" "}
+                    {result.tv_credits.crew
+                      .filter((tv) => tv.poster_path)
+                      .slice(0, 6)
+                      .map((tv) => (
+                        <WatchPoster
+                          key={tv.id}
+                          id={tv.id}
+                          imageUrl={tv.poster_path}
+                          title={tv.name ? tv.name : ""}
+                          year={tv.first_air_date ? tv.first_air_date.substring(0, 7) : ""}
+                          rating={tv.vote_average ? tv.vote_average : ""}
+                          popularity={tv.popularity}
+                          description={tv}
+                          character={tv.job}
+                          isCredit={true}
+                          isMovie={true}
+                          isCast={false}
+                          vote_count={tv.vote_count}
+                        />
+                      ))}{" "}
                   </WatchSection>
                 )}{" "}
-              </>
-            </TVCredit>
+              </>{" "}
+            </TVCredit>{" "}
           </SecondContainer>{" "}
         </SecondPage>{" "}
-      </>
+      </>{" "}
     </>
   );
 

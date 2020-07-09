@@ -59,7 +59,7 @@ const Poster = ({ id, imageUrl, title, rating, year, isMovie }) => (
             {" "}
             ⭐️{" "}
           </span>{" "}
-          {rating} / 10{" "}
+          {rating}/ 10{" "}
         </Rating>{" "}
       </ImageContainer>{" "}
       <Title> {title.length > 18 ? `${title.substring(0, 18)}...` : title} </Title> <Year> {year} </Year>{" "}
@@ -71,7 +71,6 @@ Poster.propTypes = {
   id: PropTypes.number.isRequired,
   imageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
-  rating: PropTypes.number,
   year: PropTypes.string,
   isMovie: PropTypes.bool,
 };

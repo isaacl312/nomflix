@@ -5,11 +5,14 @@ import styled from "styled-components";
 
 const Container = styled.div`
   font-size: 12px;
+  margin-right: 12px;
+  margin-top: 12px;
 `;
 
 const Image = styled.div`
   background-image: url(${(props) => props.bgUrl});
   height: 180px;
+  width: 130px;
   background-size: cover;
   border-radius: 4px;
   background-position: center center;
@@ -64,42 +67,41 @@ const ProfileCard = ({ id, imageUrl, character, name, rating, isPeople, featureT
         <Image bgUrl={imageUrl ? `https://image.tmdb.org/t/p/w300${imageUrl}` : require("../assets/noPosterSmall.png")} />{" "}
         <Rating>
           <span role="img" aria-label="Rating">
-            ⭐️
+            {" "}
+            ⭐️{" "}
           </span>{" "}
-          {rating}
+          {rating ? rating.toString().substr(0, rating.toString().search(/[.]/) + 2) : ""}{" "}
         </Rating>{" "}
         <>
+          {" "}
           <Name>
             {" "}
-            {name
-              ? name.search(/[\/\(\\-]/i) > 18 && name.slice(0, name.search(/[\/\(\\-]/i)).length > 18 && name.length > 18
-                ? `${name.slice(0, name.search(/[\/\(\\-]/i)).substring(0, 18)}..`
-                : name.slice(0, name.search(/[\/\(\\-]/i)).substring(0, 18)
-              : ""}
-          </Name>
-        </>
+            {name && (0 < name.search(/[\/\(\\-]/i) && name.search(/[\/\(\\-]/i) < 23) && name.slice(0, name.search(/[\/\(\\-]/i))}{" "}
+            {name && !(0 < name.search(/[\/\(\\-]/i) && name.search(/[\/\(\\-]/i) < 23) ? (name.length > 23 ? `${name.substring(0, 23)}..` : name) : ""}{" "}
+          </Name>{" "}
+        </>{" "}
         <>
+          {" "}
           {!isPeople && (
             <Character>
               {" "}
-              (
-              {character
-                ? character.search(/[\/\(\\-]/i) > 18 && character.slice(0, character.search(/[\/\(\\-]/i)).length > 18 && character.length > 18
-                  ? `${character.slice(0, character.search(/[\/\(\\-]/i)).substring(0, 18)}..`
-                  : character.slice(0, character.search(/[\/\(\\-]/i)).substring(0, 18)
-                : ""}
-              )
+              {character && (0 < character.search(/[\/\(\\-]/i) && character.search(/[\/\(\\-]/i) < 23) && character.slice(0, character.search(/[\/\(\\-]/i))}{" "}
+              {character && !(0 < character.search(/[\/\(\\-]/i) && character.search(/[\/\(\\-]/i) < 23)
+                ? character.length > 23
+                  ? `${character.substring(0, 23)}..`
+                  : character
+                : ""}{" "}
             </Character>
-          )}
-        </>
+          )}{" "}
+        </>{" "}
         <>
+          {" "}
           {isPeople && (
             <>
-              <FeatureTitle> {featureTitle} </FeatureTitle>
-              <FeatureYear> {featureYear} </FeatureYear>
+              <FeatureTitle> {featureTitle} </FeatureTitle> <FeatureYear> {featureYear} </FeatureYear>{" "}
             </>
           )}{" "}
-        </>
+        </>{" "}
       </ImageContainer>{" "}
     </Container>{" "}
   </Link>

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import "./App.css";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+// import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const Container = styled.div`
   :not(:last-child) {
@@ -36,7 +36,6 @@ const ButtonContainer = styled.div`
   z-index: 2;
   right: 0px;
   top: 6px;
-  background-color: blue;
 `;
 const RightButtonContainer = styled.div`
   margin-right: -20px;
@@ -59,7 +58,7 @@ const RightButtonContainer = styled.div`
 const RightButtonImg = styled.div`
   background-image: url(https://image.flaticon.com/icons/svg/56/56814.svg);
   background-size: cover;
-  background-color: green;
+  background-color: rgba(0, 253, 255, 0.9);
   height: 50px;
   width: 50px;
   border-radius: 35px;
@@ -93,7 +92,7 @@ const LeftButtonContainer = styled.div`
 const LeftButtonImg = styled.div`
   background-image: url(https://image.flaticon.com/icons/svg/56/56856.svg);
   background-size: cover;
-  background-color: green;
+  background-color: rgba(0, 253, 255, 0.9);
   height: 50px;
   width: 50px;
   border-radius: 35px;
@@ -105,21 +104,23 @@ const LeftButtonImg = styled.div`
   }
 `;
 
-const Section = ({ title, subtitle, children, section, clickHandler }) => (
+const Section = ({ title, subtitle, children, section, clickHandler, buttonAppear = true }) => (
   <Container>
     <Title>
       {title} <SubTitle> {subtitle} </SubTitle>
     </Title>
     <GridContainer>
       <Grid>{children}</Grid>
-      <ButtonContainer>
-        <RightButtonContainer onClick={() => clickHandler(section, true)}>
-          <RightButtonImg />
-        </RightButtonContainer>
-        <LeftButtonContainer onClick={() => clickHandler(section, false)}>
-          <LeftButtonImg />
-        </LeftButtonContainer>
-      </ButtonContainer>
+      {buttonAppear && (
+        <ButtonContainer>
+          <RightButtonContainer onClick={() => clickHandler(section, true)}>
+            <RightButtonImg />
+          </RightButtonContainer>
+          <LeftButtonContainer onClick={() => clickHandler(section, false)}>
+            <LeftButtonImg />
+          </LeftButtonContainer>
+        </ButtonContainer>
+      )}
     </GridContainer>
   </Container>
 );

@@ -1,13 +1,13 @@
 import React from "react";
 import PeoplePresenter from "./PeoplePresenter";
-import { PeopleApi } from "../../api";
+import {
+  PeopleApi
+} from "../../api";
 
 export default class extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      location: { pathname },
-    } = props;
+
     this.state = {
       result: null,
       error: null,
@@ -18,9 +18,13 @@ export default class extends React.Component {
   async componentDidMount() {
     const {
       match: {
-        params: { id },
+        params: {
+          id
+        },
       },
-      history: { push },
+      history: {
+        push
+      },
     } = this.props;
 
     const parsedId = parseInt(id);
@@ -30,7 +34,9 @@ export default class extends React.Component {
     }
     let result = null;
     try {
-      ({ data: result } = await PeopleApi.PeopleDetail(parsedId));
+      ({
+        data: result
+      } = await PeopleApi.PeopleDetail(parsedId));
     } catch {
       this.setState({
         error: "Can't find anything.",
@@ -46,8 +52,21 @@ export default class extends React.Component {
   }
 
   render() {
-    const { result, error, loading } = this.state;
+    const {
+      result,
+      error,
+      loading
+    } = this.state;
 
-    return <PeoplePresenter result={result} error={error} loading={loading} />;
+    return <PeoplePresenter result = {
+      result
+    }
+    error = {
+      error
+    }
+    loading = {
+      loading
+    }
+    />;
   }
 }

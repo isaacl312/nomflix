@@ -1,6 +1,9 @@
 import React from "react";
 import TVPresenter from "./TVPresenter";
-import { api, tvApi } from "../../api";
+import {
+  api,
+  tvApi
+} from "../../api";
 
 export default class extends React.Component {
   state = {
@@ -19,60 +22,57 @@ export default class extends React.Component {
     loading: true,
     error: null,
   };
+
   clickHandler = (section, next) => {
     switch (section) {
       case "weeklyTrending":
-        {
-          next === true
-            ? this.state.weeklyTrendingNextPage < 100 &&
-              this.setState((state) => ({
-                weeklyTrendingNextPage: state.weeklyTrendingNextPage + 1,
-              }))
-            : this.state.weeklyTrendingNextPage != 1 &&
-              this.setState((state) => ({
-                weeklyTrendingNextPage: state.weeklyTrendingNextPage - 1,
-              }));
-        }
+        next === true ?
+          this.state.weeklyTrendingNextPage < 100 &&
+          this.setState((state) => ({
+            weeklyTrendingNextPage: state.weeklyTrendingNextPage + 1,
+          })) :
+          this.state.weeklyTrendingNextPage !== 1 &&
+          this.setState((state) => ({
+            weeklyTrendingNextPage: state.weeklyTrendingNextPage - 1,
+          }));
+
         break;
 
       case "topRated":
-        {
-          next === true
-            ? this.state.topRatedNextPage < 30 &&
-              this.setState((state) => ({
-                topRatedNextPage: state.topRatedNextPage + 1,
-              }))
-            : this.state.topRatedNextPage != 1 &&
-              this.setState((state) => ({
-                topRatedNextPage: state.topRatedNextPage - 1,
-              }));
-        }
+        next === true ?
+          this.state.topRatedNextPage < 30 &&
+          this.setState((state) => ({
+            topRatedNextPage: state.topRatedNextPage + 1,
+          })) :
+          this.state.topRatedNextPage !== 1 &&
+          this.setState((state) => ({
+            topRatedNextPage: state.topRatedNextPage - 1,
+          }));
+
         break;
       case "popular":
-        {
-          next === true
-            ? this.state.popularNextPage < 10 &&
-              this.setState((state) => ({
-                popularNextPage: state.popularNextPage + 1,
-              }))
-            : this.state.popularNextPage != 1 &&
-              this.setState((state) => ({
-                popularNextPage: state.popularNextPage - 1,
-              }));
-        }
+        next === true ?
+          this.state.popularNextPage < 10 &&
+          this.setState((state) => ({
+            popularNextPage: state.popularNextPage + 1,
+          })) :
+          this.state.popularNextPage !== 1 &&
+          this.setState((state) => ({
+            popularNextPage: state.popularNextPage - 1,
+          }));
+
         break;
       case "airingToday":
-        {
-          next === true
-            ? this.state.airingTodayNextPage < 500 &&
-              this.setState((state) => ({
-                airingTodayNextPage: state.airingTodayNextPage + 1,
-              }))
-            : this.state.airingTodayNextPage != 1 &&
-              this.setState((state) => ({
-                airingTodayNextPage: state.airingTodayNextPage - 1,
-              }));
-        }
+        next === true ?
+          this.state.airingTodayNextPage < 500 &&
+          this.setState((state) => ({
+            airingTodayNextPage: state.airingTodayNextPage + 1,
+          })) :
+          this.state.airingTodayNextPage !== 1 &&
+          this.setState((state) => ({
+            airingTodayNextPage: state.airingTodayNextPage - 1,
+          }));
+
         break;
       default:
     }
@@ -82,7 +82,9 @@ export default class extends React.Component {
     console.log("componentDidUpdate");
     if (this.state.weeklyTrendingCurrPage !== this.state.weeklyTrendingNextPage) {
       const {
-        data: { results: weeklyTrending },
+        data: {
+          results: weeklyTrending
+        },
       } = await api.get("trending/tv/week", {
         params: {
           page: this.state.weeklyTrendingNextPage,
@@ -95,7 +97,9 @@ export default class extends React.Component {
     }
     if (this.state.topRatedCurrPage !== this.state.topRatedNextPage) {
       const {
-        data: { results: topRated },
+        data: {
+          results: topRated
+        },
       } = await api.get("tv/top_rated", {
         params: {
           page: this.state.topRatedNextPage,
@@ -108,7 +112,9 @@ export default class extends React.Component {
     }
     if (this.state.airingTodayCurrPage !== this.state.airingTodayNextPage) {
       const {
-        data: { results: airingToday },
+        data: {
+          results: airingToday
+        },
       } = await api.get("tv/airing_today", {
         params: {
           page: this.state.airingTodayNextPage,
@@ -121,7 +127,9 @@ export default class extends React.Component {
     }
     if (this.state.popularCurrPage !== this.state.popularNextPage) {
       const {
-        data: { results: popular },
+        data: {
+          results: popular
+        },
       } = await api.get("tv/popular", {
         params: {
           page: this.state.popularNextPage,
@@ -137,16 +145,24 @@ export default class extends React.Component {
   async componentDidMount() {
     try {
       const {
-        data: { results: weeklyTrending },
+        data: {
+          results: weeklyTrending
+        },
       } = await tvApi.weeklyTrending();
       const {
-        data: { results: topRated },
+        data: {
+          results: topRated
+        },
       } = await tvApi.topRated();
       const {
-        data: { results: popular },
+        data: {
+          results: popular
+        },
       } = await tvApi.popular();
       const {
-        data: { results: airingToday },
+        data: {
+          results: airingToday
+        },
       } = await tvApi.airingToday();
       // Promise.all([tvApi.weeklyTrending(), tvApi.topRated(), tvApi.popular(), tvApi.airingToday()])
       this.setState({
@@ -167,16 +183,36 @@ export default class extends React.Component {
   }
 
   render() {
-    const { weeklyTrending, topRated, popular, airingToday, loading, error } = this.state;
-    return (
-      <TVPresenter
-        clickHandler={this.clickHandler}
-        weeklyTrending={weeklyTrending}
-        topRated={topRated}
-        popular={popular}
-        airingToday={airingToday}
-        loading={loading}
-        error={error}
+    const {
+      weeklyTrending,
+      topRated,
+      popular,
+      airingToday,
+      loading,
+      error
+    } = this.state;
+    return ( <
+      TVPresenter clickHandler = {
+        this.clickHandler
+      }
+      weeklyTrending = {
+        weeklyTrending
+      }
+      topRated = {
+        topRated
+      }
+      popular = {
+        popular
+      }
+      airingToday = {
+        airingToday
+      }
+      loading = {
+        loading
+      }
+      error = {
+        error
+      }
       />
     );
   }

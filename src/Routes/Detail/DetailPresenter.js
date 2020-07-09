@@ -9,6 +9,7 @@ import Poster from "Components/Poster";
 import WatchPoster from "Components/WatchPoster";
 import ProfileCard from "Components/ProfileCard";
 import Reviews from "Components/Reviews";
+import { Link } from "react-router-dom";
 
 const TopContainer = styled.div`
   height: calc(100vh - 50px);
@@ -164,66 +165,62 @@ const Recommendation = styled.div`
   padding: 50px;
 `;
 
-const DetailPresenter = ({ result, loading, error }) =>
+const DetailPresenter = ({ result, similar, recommendations, clickHandler, loading, isMovie, error }) =>
   loading ? (
     <>
       <Helmet>
-        <title> Loading | Nomflix </title>{" "}
-      </Helmet>{" "}
+        <title> Loading | Nomflix </title>
+      </Helmet>
       <Loader />
     </>
   ) : (
     <>
       <>
         <TopContainer>
-          <Backdrop bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`} />{" "}
+          <Backdrop bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`} />
           <Helmet>
-            <title> {result.original_title ? result.original_title : result.original_name} | Nomflix </title>{" "}
-          </Helmet>{" "}
+            <title> {result.original_title ? result.original_title : result.original_name} | Nomflix </title>
+          </Helmet>
           <Content>
-            <PosterImg bgImage={result.poster_path ? `https://image.tmdb.org/t/p/original${result.poster_path}` : require("../../assets/noPosterSmall.png")} />{" "}
+            <PosterImg bgImage={result.poster_path ? `https://image.tmdb.org/t/p/original${result.poster_path}` : require("../../assets/noPosterSmall.png")} />
             <>
               <Center>
                 <DiscriptionContainer>
-                  <Title> {result.original_title ? result.original_title : result.original_name} </Title>{" "}
+                  <Title> {result.original_title ? result.original_title : result.original_name} </Title>
                   <ItemContainer>
                     <Item> {result.release_date ? result.release_date.substring(0, 4) : ""} </Item> <Divider> • </Divider>
                     <Item>
-                      {" "}
                       {result.runtime ? result.runtime : result.episode_run_time[0]}
-                      min{" "}
-                    </Item>{" "}
-                    <Divider> • </Divider>{" "}
-                    <Item> {result.genres && result.genres.map((genre, index) => (index === result.genres.length - 1 ? genre.name : `${genre.name}/ `))} </Item>{" "}
+                      min
+                    </Item>
+                    <Divider> • </Divider>
+                    <Item> {result.genres && result.genres.map((genre, index) => (index === result.genres.length - 1 ? genre.name : `${genre.name}/ `))} </Item>
                     {result.number_of_seasons ? (
                       <>
-                        <Divider> • </Divider>{" "}
+                        <Divider> • </Divider>
                         <span>
-                          {" "}
                           {result.number_of_seasons}
-                          th Seasons{" "}
-                        </span>{" "}
+                          th Seasons
+                        </span>
                       </>
                     ) : (
                       ""
-                    )}{" "}
+                    )}
                     {result.number_of_episodes ? (
                       <>
-                        <Divider> • </Divider>{" "}
+                        <Divider> • </Divider>
                         <span>
-                          {" "}
                           {result.number_of_episodes}
-                          episodes{" "}
-                        </span>{" "}
+                          episodes
+                        </span>
                       </>
                     ) : (
                       ""
-                    )}{" "}
-                  </ItemContainer>{" "}
-                  <Overview> {result.overview} </Overview>{" "}
-                </DiscriptionContainer>{" "}
+                    )}
+                  </ItemContainer>
+                  <Overview> {result.overview} </Overview>
+                </DiscriptionContainer>
                 <>
-                  {" "}
                   {result.videos.results.length > 0 && (
                     <VideoContainer>
                       <Video
@@ -232,63 +229,59 @@ const DetailPresenter = ({ result, loading, error }) =>
                             ? `https://youtube.com/embed/${result.videos.results[result.videos.results.length - 1].key}`
                             : `https://www.youtube.com/watch?v=rB0k21sGT_A`
                         }
-                      />{" "}
+                      />
                     </VideoContainer>
-                  )}{" "}
-                </>{" "}
-              </Center>{" "}
-            </>{" "}
+                  )}
+                </>
+              </Center>
+            </>
             <>
               <RightContainer>
-                <Review> Reviews </Review>{" "}
+                <Review> Reviews </Review>
                 <>
                   <RatingContainer>
-                    <Overall> Popularity: </Overall> <Rating1> {} </Rating1>{" "}
-                    <Rating1> {result.popularity.toString().substr(0, result.popularity.toString().search(/[.]/) + 2)} </Rating1> <Rating2> (by TMDb) </Rating2>{" "}
-                  </RatingContainer>{" "}
+                    <Overall> Popularity: </Overall> <Rating1> {} </Rating1>
+                    <Rating1> {result.popularity.toString().substr(0, result.popularity.toString().search(/[.]/) + 2)} </Rating1> <Rating2> (by TMDb) </Rating2>
+                  </RatingContainer>
                   <RatingContainer>
                     <Overall> Critic Votes: </Overall> <Rating1> {result.vote_average} </Rating1> <Rating2> /10 ({result.vote_count} rates)</Rating2>
-                  </RatingContainer>{" "}
-                </>{" "}
+                  </RatingContainer>
+                </>
                 <>
-                  {" "}
                   {result.reviews.results[0] && (
                     <ReviewContainer>
-                      <ComentTitle> Recent Comments </ComentTitle>{" "}
-                      {result.reviews.results.slice(0, 3).map((review) => (
-                        <Reviews key={review.id} id={review.id} author={review.author} content={review.content} />
-                      ))}{" "}
+                      <ComentTitle> Recent Comments </ComentTitle>
+                      {result.reviews.results.slice(0, 4).map((review) => (
+                        <Reviews key={review.id} id={review.id} author={review.author ? review.author : ""} content={review.content ? review.content : ""} />
+                      ))}
                     </ReviewContainer>
-                  )}{" "}
-                </>{" "}
-              </RightContainer>{" "}
-            </>{" "}
-          </Content>{" "}
-        </TopContainer>{" "}
-      </>{" "}
+                  )}
+                </>
+              </RightContainer>
+            </>
+          </Content>
+        </TopContainer>
+      </>
       <>
         <SecondPage>
           <SecondContainer>
             <>
               <Credit>
-                {" "}
                 {result.credits.cast && (
-                  <Section title="Actors">
-                    {" "}
-                    {result.credits.cast.slice(0, 8).map((actor) => (
-                      <ProfileCard key={actor.id} id={actor.id} imageUrl={actor.profile_path} name={actor.name} character={actor.character} isPeople={""} />
-                    ))}{" "}
-                  </Section>
-                )}{" "}
-              </Credit>{" "}
-            </>{" "}
+                  <WatchSection title="Casts">
+                    {result.credits.cast
+                      .slice(0, 18)
+                      .filter((cast) => cast.profile_path)
+                      .map(((cast) => <ProfileCard key={cast.id} id={cast.id} imageUrl={cast.profile_path} name={cast.name} character={cast.character} isPeople={false} />: ""))}
+                  </WatchSection>
+                )}
+              </Credit>
+            </>
             <>
               <Seasons>
-                {" "}
                 {result.seasonInfo && (
                   <WatchSection title="Seasons">
-                    {" "}
-                    {result.seasonInfo.slice(0, 6).map((season) => (
+                    {result.seasonInfo.slice(0, 12).map((season) => (
                       <WatchPoster
                         key={season.id}
                         id={season.id}
@@ -298,101 +291,79 @@ const DetailPresenter = ({ result, loading, error }) =>
                         description={season.overview === "" ? season.episodes[0] : season}
                         rating={season.episodes[0] ? season.episodes[0].vote_average : ""}
                         vote_count={season.episodes[0] ? season.episodes[0].vote_count : ""}
-                        guest_stars={""}
-                        popularity={""}
-                        character={""}
                         isCredit={false}
                       />
-                    ))}{" "}
+                    ))}
                   </WatchSection>
-                )}{" "}
-              </Seasons>{" "}
-            </>{" "}
-          </SecondContainer>{" "}
-        </SecondPage>{" "}
-      </>{" "}
+                )}
+              </Seasons>
+            </>
+          </SecondContainer>
+        </SecondPage>
+      </>
       <>
         <ThirdPage>
           <ThirdContainer>
-            <>
+            {result.similar.total_results ? (
               <Similar>
-                {" "}
-                {result.imdb_id &&
-                  result.similar.results && (
-                    <Section title="Similar Movies to watch">
-                      {" "}
-                      {result.similar.results.slice(0, 16).map((movie) => (
-                        <Poster
-                          key={movie.id}
-                          id={movie.id}
-                          imageUrl={movie.poster_path ? movie.poster_path : ""}
-                          title={movie.original_title ? movie.original_title : ""}
-                          rating={movie.vote_average ? movie.vote_average : ""}
-                          year={movie.release_date ? movie.release_date.substring(0, 4) : ""}
-                          isMovie={true}
-                        />
-                      ))}{" "}
-                    </Section>
-                  )}{" "}
-                {result.episode_run_time &&
-                  result.similar.results && (
-                    <Section title="Similar Dramas to watch">
-                      {" "}
-                      {result.similar.results.slice(0, 16).map((show) => (
-                        <Poster
-                          key={show.id}
-                          id={show.id}
-                          imageUrl={show.poster_path}
-                          title={show.original_name}
-                          rating={show.vote_average}
-                          year={show.first_air_date.substring(0, 4)}
-                        />
-                      ))}{" "}
-                    </Section>
-                  )}{" "}
-              </Similar>{" "}
-            </>{" "}
-            <>
+                <Section
+                  title="Similar watch"
+                  subtitle={result.similar.total_results !== 0 ? `(${result.similar.total_results})` : ""}
+                  section="similar"
+                  clickHandler={clickHandler}
+                  buttonAppear={result.similar.total_results < 18 ? false : true}
+                >
+                  {similar
+                    .filter((watch) => watch.poster_path)
+                    .slice(0, 18)
+                    .map((watch) => (
+                      <Poster
+                        key={watch.id}
+                        id={watch.id}
+                        imageUrl={watch.poster_path ? watch.poster_path : ""}
+                        title={watch.original_title ? watch.original_title : watch.original_name}
+                        year={watch.release_date ? watch.release_date.substring(0, 4) : watch.first_air_date.substring(0, 4)}
+                        rating={watch.vote_average ? watch.vote_average : ""}
+                        isMovie={isMovie}
+                      />
+                    ))}
+                </Section>
+              </Similar>
+            ) : (
+              ""
+            )}
+
+            {result.recommendations.total_results ? (
               <Recommendation>
-                {" "}
-                {result.imdb_id &&
-                  result.recommendations.results && (
-                    <Section title="Recommend for you">
-                      {" "}
-                      {result.recommendations.results.slice(0, 16).map((movie) => (
-                        <Poster
-                          key={movie.id}
-                          id={movie.id}
-                          imageUrl={movie.poster_path}
-                          title={movie.original_title}
-                          rating={movie.vote_average}
-                          year={movie.release_date.substring(0, 4)}
-                          isMovie={true}
-                        />
-                      ))}{" "}
-                    </Section>
-                  )}{" "}
-                {result.episode_run_time &&
-                  result.recommendations.results && (
-                    <Section title="Recommend for you ">
-                      {" "}
-                      {result.recommendations.results.slice(0, 16).map((show) => (
-                        <Poster
-                          key={show.id}
-                          id={show.id}
-                          imageUrl={show.poster_path}
-                          title={show.original_name}
-                          rating={show.vote_average}
-                          year={show.first_air_date.substring(0, 4)}
-                        />
-                      ))}{" "}
-                    </Section>
-                  )}{" "}
-              </Recommendation>{" "}
-            </>{" "}
-          </ThirdContainer>{" "}
-        </ThirdPage>{" "}
-      </>{" "}
+                <Section
+                  title="Recommend for you"
+                  subtitle={result.recommendations.total_results !== 0 ? `(${result.recommendations.total_results})` : ""}
+                  section="recommendations"
+                  clickHandler={clickHandler}
+                  buttonAppear={result.recommendations.total_results < 18 ? false : true}
+                >
+                  {recommendations
+                    .filter((watch) => watch.poster_path)
+                    .slice(0, 18)
+                    .map((watch) => (
+                      <Poster
+                        key={watch.id}
+                        id={watch.id}
+                        imageUrl={watch.poster_path ? watch.poster_path : ""}
+                        title={watch.original_title ? watch.original_title : watch.original_name}
+                        rating={watch.vote_average ? watch.vote_average : ""}
+                        year={watch.release_date ? watch.release_date.substring(0, 4) : watch.first_air_date.substring(0, 4)}
+                        isMovie={isMovie}
+                      />
+                    ))}
+                </Section>
+              </Recommendation>
+            ) : (
+              ""
+            )}
+          </ThirdContainer>
+        </ThirdPage>
+      </>
     </>
   );
 

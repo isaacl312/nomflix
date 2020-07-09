@@ -16,55 +16,52 @@ padding-left: 20px
 `;
 
 const TVPresenter = ({ weeklyTrending, topRated, popular, airingToday, loading, error, clickHandler }) => (
-  <Container>
-    <Helmet>
-      <title> TV Shows | Nomflix </title>{" "}
-    </Helmet>{" "}
-    {loading ? (
-      <Loader />
-    ) : (
-      <>
-        {" "}
-        {weeklyTrending &&
-          weeklyTrending.length > 0 && (
-            <Section title="Weekly Trending Now" clickHandler={clickHandler}>
-              {" "}
-              {weeklyTrending.map((show) => (
-                <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
-              ))}{" "}
-            </Section>
-          )}{" "}
-        {popular &&
-          popular.length > 0 && (
-            <Section title="Popular Shows" clickHandler={clickHandler}>
-              {" "}
-              {popular.map((show) => (
-                <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
-              ))}{" "}
-            </Section>
-          )}{" "}
-        {topRated &&
-          topRated.length > 0 && (
-            <Section title="Top Rated Shows" clickHandler={clickHandler}>
-              {" "}
-              {topRated.map((show) => (
-                <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
-              ))}{" "}
-            </Section>
-          )}{" "}
-        {airingToday &&
-          airingToday.length > 0 && (
-            <Section title="Airing Today" clickHandler={clickHandler}>
-              {" "}
-              {airingToday.map((show) => (
-                <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
-              ))}{" "}
-            </Section>
-          )}{" "}
-        {error && <Message color="#e74c3c" text={error} />}{" "}
-      </>
-    )}{" "}
-  </Container>
+  <>
+    <Container>
+      <Helmet>
+        <title> TV Shows | Nomflix </title>
+      </Helmet>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {weeklyTrending &&
+            weeklyTrending.length > 0 && (
+              <Section title="Weekly Trending Now" subtitle="on TMDb (2000+)" section="weeklyTrending" clickHandler={clickHandler}>
+                {weeklyTrending.map((show) => (
+                  <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
+                ))}
+              </Section>
+            )}
+          {popular &&
+            popular.length > 0 && (
+              <Section title="Popular Shows" subtitle="(500+)" section="popular" clickHandler={clickHandler}>
+                {popular.map((show) => (
+                  <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
+                ))}
+              </Section>
+            )}
+          {topRated &&
+            topRated.length > 0 && (
+              <Section title="Top Rated Shows" subtitle="(500+)" section="topRated" clickHandler={clickHandler}>
+                {topRated.map((show) => (
+                  <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
+                ))}
+              </Section>
+            )}
+          {airingToday &&
+            airingToday.length > 0 && (
+              <Section title="Airing Today" subtitle="(150+)" section="airingToday" clickHandler={clickHandler}>
+                {airingToday.map((show) => (
+                  <Poster key={show.id} id={show.id} imageUrl={show.poster_path} title={show.original_name} rating={show.vote_average} year={show.first_air_date.substring(0, 4)} />
+                ))}
+              </Section>
+            )}
+          {error && <Message color="#e74c3c" text={error} />}
+        </>
+      )}
+    </Container>
+  </>
 );
 
 TVPresenter.propTypes = {

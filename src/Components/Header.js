@@ -39,17 +39,17 @@ export default withRouter(({ location: { pathname } }) => (
   <Header>
     <List>
       <Item current={pathname === "/nomflix/"}>
-        <SLink to="/nomflix/"> Movies </SLink>{" "}
-      </Item>{" "}
+        <SLink to="/nomflix/"> Movies </SLink>
+      </Item>
       <Item current={pathname === "/nomflix/tv"}>
-        <SLink to="/nomflix/tv"> TV </SLink>{" "}
-      </Item>{" "}
+        <SLink to="/nomflix/tv"> TV </SLink>
+      </Item>
       <Item current={pathname === "/nomflix/people"}>
-        <SLink to="/nomflix/people"> People </SLink>{" "}
-      </Item>{" "}
+        <SLink to="/nomflix/people"> People </SLink>
+      </Item>
       <Item current={pathname === "/nomflix/search"}>
-        <SLink to="/nomflix/search"> Search </SLink>{" "}
-      </Item>{" "}
-    </List>{" "}
+        <SLink to="/nomflix/search"> Search </SLink>
+      </Item>
+    </List>
   </Header>
 ));

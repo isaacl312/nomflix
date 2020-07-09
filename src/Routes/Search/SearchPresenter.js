@@ -28,7 +28,6 @@ const Input = styled.input`
 `;
 
 const PeopleContainer = styled.div`
-  padding: 20px;
   margin-top: 20px;
 `;
 
@@ -48,36 +47,42 @@ const SearchPresenter = ({ movieResults, tvResults, peopleResults, loading, sear
         {!isPeople &&
           movieResults &&
           movieResults.length > 0 && (
-            <Section title="Movie Results">
+            <Section title="Movie Results" buttonAppear={false}>
               {" "}
-              {movieResults.slice(0, 18).map((movie) => (
-                <Poster
-                  key={movie.id}
-                  id={movie.id}
-                  imageUrl={movie.poster_path}
-                  title={movie.original_title}
-                  rating={movie.vote_average}
-                  year={movie.release_date.substring(0, 4)}
-                  isMovie={true}
-                />
-              ))}{" "}
+              {movieResults
+                .filter((movie) => movie.poster_path)
+                .slice(0, 20)
+                .map((movie) => (
+                  <Poster
+                    key={movie.id}
+                    id={movie.id}
+                    imageUrl={movie.poster_path}
+                    title={movie.original_title}
+                    rating={movie.vote_average}
+                    year={movie.release_date.substring(0, 4)}
+                    isMovie={true}
+                  />
+                ))}{" "}
             </Section>
           )}{" "}
         {!isPeople &&
           tvResults &&
           tvResults.length > 0 && (
-            <Section title="TV Show Results">
+            <Section title="TV Show Results" buttonAppear={false}>
               {" "}
-              {tvResults.slice(0, 18).map((show) => (
-                <Poster
-                  key={show.id}
-                  id={show.id}
-                  imageUrl={show.poster_path}
-                  title={show.original_name}
-                  rating={show.vote_average}
-                  year={show.first_air_date && show.first_air_date.substring(0, 4)}
-                />
-              ))}{" "}
+              {tvResults
+                .filter((tv) => tv.poster_path)
+                .slice(0, 20)
+                .map((show) => (
+                  <Poster
+                    key={show.id}
+                    id={show.id}
+                    imageUrl={show.poster_path}
+                    title={show.original_name}
+                    rating={show.vote_average}
+                    year={show.first_air_date && show.first_air_date.substring(0, 4)}
+                  />
+                ))}{" "}
             </Section>
           )}{" "}
         <PeopleContainer>
@@ -85,19 +90,22 @@ const SearchPresenter = ({ movieResults, tvResults, peopleResults, loading, sear
           {isPeople &&
             peopleResults &&
             peopleResults.length > 0 && (
-              <Section title="Your Searched Actors or Directors">
+              <Section title="Your Search on People (Casts & Producers)" buttonAppear={false}>
                 {" "}
-                {peopleResults.slice(0, 18).map((person) => (
-                  <ProfileCard
-                    key={person.id}
-                    id={person.id}
-                    imageUrl={person.profile_path}
-                    name={person.name}
-                    rating={person.popularity}
-                    year={person.first_air_date && person.first_air_date.substring(0, 4)}
-                    isPeople={1}
-                  />
-                ))}{" "}
+                {peopleResults
+                  .filter((person) => person.profile_path)
+                  .slice(0, 20)
+                  .map((person) => (
+                    <ProfileCard
+                      key={person.id}
+                      id={person.id}
+                      imageUrl={person.profile_path}
+                      name={person.name}
+                      rating={person.popularity}
+                      year={person.first_air_date && person.first_air_date.substring(0, 4)}
+                      isPeople={1}
+                    />
+                  ))}{" "}
               </Section>
             )}{" "}
           {error && <Message color="#e74c3c" text={error} />}{" "}
@@ -111,11 +119,11 @@ const SearchPresenter = ({ movieResults, tvResults, peopleResults, loading, sear
             {" "}
             {isPeople &&
               peoplePopular && (
-                <Section title="Popular Stars on TMDb">
+                <Section title="Popular Stars on TMDb" buttonAppear={false}>
                   {" "}
                   {peoplePopular
-                    .slice(0, 18)
-                    .slice(0, 18)
+                    .filter((person) => person.profile_path)
+                    .slice(0, 20)
                     .map((person) => {
                       const featureTitle = person.known_for
                         ? person.known_for.length > 0
@@ -142,8 +150,8 @@ const SearchPresenter = ({ movieResults, tvResults, peopleResults, loading, sear
                           rating={person.popularity}
                           year={""}
                           isPeople={true}
-                          featureTitle={featureTitle}
-                          featureYear={featureYear}
+                          featureTitle={featureTitle.length > 25 ? `${featureTitle.substr(0, 25)}...` : featureTitle}
+                          featureYear={featureYear ? featureYear : ""}
                         />
                       );
                     })}{" "}
@@ -154,39 +162,42 @@ const SearchPresenter = ({ movieResults, tvResults, peopleResults, loading, sear
             {" "}
             {isPeople &&
               peopleWeeklyTrending && (
-                <Section title="Weekly Trending Now">
+                <Section title="Weekly Trending Now" buttonAppear={false}>
                   {" "}
-                  {peopleWeeklyTrending.slice(0, 18).map((person) => {
-                    const featureTitle = person.known_for
-                      ? person.known_for.length > 0
-                        ? person.known_for[person.known_for.length - 1].media_type === "movie"
-                          ? `"${person.known_for[person.known_for.length - 1].title}"`
-                          : ` "${person.known_for[person.known_for.length - 1].name}"`
-                        : ""
-                      : "";
+                  {peopleWeeklyTrending
+                    .filter((person) => person.profile_path)
+                    .slice(0, 20)
+                    .map((person) => {
+                      const featureTitle = person.known_for
+                        ? person.known_for.length > 0
+                          ? person.known_for[person.known_for.length - 1].media_type === "movie"
+                            ? `"${person.known_for[person.known_for.length - 1].title}"`
+                            : ` "${person.known_for[person.known_for.length - 1].name}"`
+                          : ""
+                        : "";
 
-                    const featureYear = person.known_for
-                      ? person.known_for.length > 0
-                        ? person.known_for[person.known_for.length - 1].media_type === "movie"
-                          ? `(${person.known_for[person.known_for.length - 1].release_date.substr(0, 4)}, MV)`
-                          : `(${person.known_for[person.known_for.length - 1].first_air_date.substr(0, 4)}, TV)`
-                        : ""
-                      : "";
+                      const featureYear = person.known_for
+                        ? person.known_for.length > 0
+                          ? person.known_for[person.known_for.length - 1].media_type === "movie"
+                            ? `(${person.known_for[person.known_for.length - 1].release_date.substr(0, 4)}, MV)`
+                            : `(${person.known_for[person.known_for.length - 1].first_air_date.substr(0, 4)}, TV)`
+                          : ""
+                        : "";
 
-                    return (
-                      <ProfileCard
-                        key={person.id}
-                        id={person.id}
-                        imageUrl={person.profile_path}
-                        name={person.name}
-                        rating={person.popularity}
-                        year={""}
-                        isPeople={true}
-                        featureTitle={featureTitle}
-                        featureYear={featureYear}
-                      />
-                    );
-                  })}{" "}
+                      return (
+                        <ProfileCard
+                          key={person.id}
+                          id={person.id}
+                          imageUrl={person.profile_path}
+                          name={person.name ? person.name : ""}
+                          rating={person.popularity}
+                          year={""}
+                          isPeople={true}
+                          featureTitle={featureTitle.length > 25 ? `${featureTitle.substr(0, 25)}...` : featureTitle}
+                          featureYear={featureYear ? featureYear : ""}
+                        />
+                      );
+                    })}{" "}
                 </Section>
               )}{" "}
           </>{" "}
